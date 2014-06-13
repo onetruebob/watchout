@@ -33,7 +33,7 @@ var createEnemies = function () {
 var render = function (enemy_data) {
 
   var enemies = gameBoard.selectAll('circle.enemy')
-            .data(enemy_data, function (d) { return d.id;});
+    .data(enemy_data, function (d) { return d.id;});
 
   enemies.enter()
     .append('svg:circle')
@@ -41,6 +41,10 @@ var render = function (enemy_data) {
       .attr('cx', function (enemy){ return axes.x(enemy.x)})
       .attr('cy', function (enemy){ return axes.y(enemy.y)})
       .attr('r', 10);
+
+  enemies.attr('class', 'enemy')
+      .attr('cx', function (enemy){ return axes.x(enemy.x)})
+      .attr('cy', function (enemy){ return axes.y(enemy.y)})
 
   enemies.exit()
     .remove();
@@ -63,27 +67,3 @@ var play = function () {
 };
 
 play();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
