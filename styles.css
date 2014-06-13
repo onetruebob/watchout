@@ -1,5 +1,12 @@
 /* your beautiful css styling goes here! */
 
-/* Note: an asteroid image is included in this repo. 
+/* Note: an asteroid image is included in this repo.
 Feel free to use it if you like. */
 
+enemy {
+  color: rgb(51, 51, 51);
+/*  display: inline;
+  height: auto;
+  line-height: 18px;
+  width: auto;*/
+}
