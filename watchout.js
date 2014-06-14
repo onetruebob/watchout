@@ -2,7 +2,7 @@
 var gameOptions = {
   height: 450,
   width: 700,
-  nEnemies: 10,
+  nEnemies: 25,
   padding: 20
 };
 
@@ -156,8 +156,8 @@ var render = function (enemyData) {
   var checkCollision = function (enemy, collidedCallback){
     _(players).each(function (player) {
       var radiusSum =  parseFloat(enemy.attr('width')) + player.r;
-      var xDiff = parseFloat(enemy.attr('x')) - player.x;
-      var yDiff = parseFloat(enemy.attr('y')) - player.y;
+      var xDiff = parseFloat(enemy.attr('x') + (enemy.attr('width') * 0.5)) - player.x;
+      var yDiff = parseFloat(enemy.attr('y') + (enemy.attr('width') * 0.5)) - player.y;
 
       var separation = Math.sqrt( Math.pow(xDiff,2) + Math.pow(yDiff,2) );
       if (separation < radiusSum) {
