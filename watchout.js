@@ -158,7 +158,7 @@ var render = function (enemyData) {
 
   var checkCollision = function (enemy, collidedCallback){
     _(players).each(function (player) {
-      var radiusSum =  parseFloat(enemy.attr('r')) + player.r;            // <= r ≠ defined
+      var radiusSum =  parseFloat(enemy.attr('width')) + player.r;            // <= r ≠ defined
       var xDiff = parseFloat(enemy.attr('x')) - player.x;
       var yDiff = parseFloat(enemy.attr('y')) - player.y;
 
