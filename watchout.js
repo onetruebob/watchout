@@ -22,7 +22,6 @@ var gameBoard = d3.select('.container').append('svg:svg')
                 .attr('width', gameOptions.width)
                 .attr('height', gameOptions.height);
 
-// '<defs><pattern id="img1" patternUnits="userSpaceOnUse" width="100" height="100"><image xlink:href="shuriken.png" x="0" y="0" width="100" height="100" /></pattern></defs>'
 d3.select('svg').append('defs')
 d3.select('defs').append('pattern')
 d3.select('pattern').attr('id', 'img')
@@ -31,8 +30,6 @@ d3.select('pattern').attr('id', 'img')
                     .attr('height', '30')
                     .append('image')
                     .attr('xlink:href','shuriken.png')
-                    .attr('x', '0')
-                    .attr('y', '0')
                     .attr('width','30')
                     .attr('height', '30');
 
@@ -158,7 +155,7 @@ var render = function (enemyData) {
 
   var checkCollision = function (enemy, collidedCallback){
     _(players).each(function (player) {
-      var radiusSum =  parseFloat(enemy.attr('width')) + player.r;            // <= r ≠ defined
+      var radiusSum =  parseFloat(enemy.attr('width')) + player.r;
       var xDiff = parseFloat(enemy.attr('x')) - player.x;
       var yDiff = parseFloat(enemy.attr('y')) - player.y;
 
@@ -170,7 +167,7 @@ var render = function (enemyData) {
   };
 
   var tweenWithCollisionDetection = function (endData){
-    var enemy = d3.select(this);                              // <= Wrong This
+    var enemy = d3.select(this);
 
     var startPos = {
       x: parseFloat(enemy.attr('x')),
@@ -199,16 +196,6 @@ var render = function (enemyData) {
   var enemies = gameBoard.selectAll('rect.enemy')
     .data(enemyData, function (d) { return d.id;});
 
-// <rect x="150" y="20" width="60" height="60" fill="blue">
-//   <animateTransform attributeType="xml"
-//                     attributeName="transform"
-//                     type="rotate"
-//                     from="0 180 50"
-//                     to="360 180 50"
-//                     dur="4s"
-//                     repeatCount="indefinite"/>
-// </rect>
-
   enemies.enter()
     .append('svg:rect')
       .attr('class', 'enemy')
@@ -216,15 +203,7 @@ var render = function (enemyData) {
       .attr('y', function (enemy){ return axes.y(enemy.y);})
       .attr('width', 30)
       .attr('height', 30)
-      .attr('fill', 'url(#img)')
-      .append('animateTransform')
-      .attr('attributeType', 'xml')
-      .attr('attributeName', 'transform')
-      .attr('type','rotate')
-      .attr('from', '0 0 0')
-      .attr('to', '360 0 0')
-      .attr('dur', '2s')
-      .attr('repeatCount', 'indefinate');
+      .attr('fill', 'url(#img)');
 
   enemies.attr('class', 'enemy')
       .attr('x', function (enemy){ return axes.x(enemy.x);})

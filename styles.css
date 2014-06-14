@@ -3,12 +3,22 @@
 /* Note: an asteroid image is included in this repo.
 Feel free to use it if you like. */
 
-enemy {
+.enemy {
   background-image: url('shuriken.png');
   height: 10px;
   width: 10px;
-/*  display: inline;
-  height: auto;
-  line-height: 18px;
-  width: auto;*/
+
+  animation: spin 0.5s infinite;
+  -webkit-animation: spin 0.5s infinite;
+  transform-origin: center center;
+  -webkit-transform-origin: center center;
+}
+
+
+
+@-webkit-keyframes spin {
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+  100% {transform:rotate(360deg);}
 }
