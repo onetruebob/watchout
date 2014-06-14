@@ -2,7 +2,7 @@
 var gameOptions = {
   height: 450,
   width: 700,
-  nEnemies: 30,
+  nEnemies: 10,
   padding: 20
 };
 
@@ -21,6 +21,20 @@ var axes = {
 var gameBoard = d3.select('.container').append('svg:svg')
                 .attr('width', gameOptions.width)
                 .attr('height', gameOptions.height);
+
+// '<defs><pattern id="img1" patternUnits="userSpaceOnUse" width="100" height="100"><image xlink:href="shuriken.png" x="0" y="0" width="100" height="100" /></pattern></defs>'
+d3.select('svg').append('defs')
+d3.select('defs').append('pattern')
+d3.select('pattern').attr('id', 'img')
+                    .attr('patternUnits', 'objectBoundingBox')
+                    .attr('width', '30')
+                    .attr('height', '30')
+                    .append('image')
+                    .attr('xlink:href','shuriken.png')
+                    .attr('x', '0')
+                    .attr('y', '0')
+                    .attr('width','30')
+                    .attr('height', '30');
 
 
 var updateScore = function(){
@@ -145,8 +159,8 @@ var render = function (enemyData) {
   var checkCollision = function (enemy, collidedCallback){
     _(players).each(function (player) {
       var radiusSum =  parseFloat(enemy.attr('r')) + player.r;            // <= r ≠ defined
-      var xDiff = parseFloat(enemy.attr('cx')) - player.x;
-      var yDiff = parseFloat(enemy.attr('cy')) - player.y;
+      var xDiff = parseFloat(enemy.attr('x')) - player.x;
+      var yDiff = parseFloat(enemy.attr('y')) - player.y;
 
       var separation = Math.sqrt( Math.pow(xDiff,2) + Math.pow(yDiff,2) );
       if (separation < radiusSum) {
@@ -159,8 +173,8 @@ var render = function (enemyData) {
     var enemy = d3.select(this);                              // <= Wrong This
 
     var startPos = {
-      x: parseFloat(enemy.attr('cx')),
-      y: parseFloat(enemy.attr('cy'))
+      x: parseFloat(enemy.attr('x')),
+      y: parseFloat(enemy.attr('y'))
     };
 
     var endPos ={
@@ -176,32 +190,53 @@ var render = function (enemyData) {
         y: startPos.y + (endPos.y - startPos.y)*t
       };
 
-      enemy.attr('cx', enemyNextPos.x)
-            .attr('cy', enemyNextPos.y);
+      enemy.attr('x', enemyNextPos.x)
+            .attr('y', enemyNextPos.y);
     };
   };
 
 
-  var enemies = gameBoard.selectAll('circle.enemy')
+  var enemies = gameBoard.selectAll('rect.enemy')
     .data(enemyData, function (d) { return d.id;});
 
+// <rect x="150" y="20" width="60" height="60" fill="blue">
+//   <animateTransform attributeType="xml"
+//                     attributeName="transform"
+//                     type="rotate"
+//                     from="0 180 50"
+//                     to="360 180 50"
+//                     dur="4s"
+//                     repeatCount="indefinite"/>
+// </rect>
+
   enemies.enter()
-    .append('svg:circle')
+    .append('svg:rect')
       .attr('class', 'enemy')
-      .attr('cx', function (enemy){ return axes.x(enemy.x);})
-      .attr('cy', function (enemy){ return axes.y(enemy.y);})
-      .attr('r', 10);
+      .attr('x', function (enemy){ return axes.x(enemy.x);})
+      .attr('y', function (enemy){ return axes.y(enemy.y);})
+      .attr('width', 30)
+      .attr('height', 30)
+      .attr('fill', 'url(#img)')
+      .append('animateTransform')
+      .attr('attributeType', 'xml')
+      .attr('attributeName', 'transform')
+      .attr('type','rotate')
+      .attr('from', '0 0 0')
+      .attr('to', '360 0 0')
+      .attr('dur', '2s')
+      .attr('repeatCount', 'indefinate');
 
   enemies.attr('class', 'enemy')
-      .attr('cx', function (enemy){ return axes.x(enemy.x);})
-      .attr('cy', function (enemy){ return axes.y(enemy.y);});
+      .attr('x', function (enemy){ return axes.x(enemy.x);})
+      .attr('y', function (enemy){ return axes.y(enemy.y);});
 
   enemies.exit()
     .remove();
 
   enemies.transition()
         .duration(500)
-        .attr('r', 10)
+        .attr('width', 30)
+        .attr('height', 30)
       .transition()
         .duration(2000)
         .tween('custom', tweenWithCollisionDetection);
